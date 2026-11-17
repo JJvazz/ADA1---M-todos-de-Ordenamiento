@@ -1,0 +1,66 @@
+def ordenamiento_insercion(corredores):
+    """
+    Ordena una lista de diccionarios de corredores por su tiempo en segundos
+    de menor a mayor utilizando el método de Inserción.
+    """
+    n = len(corredores)
+    comparaciones = 0
+    desplazamientos = 0
+
+    # Empezamos desde el segundo elemento (índice 1), asumiendo que el primero ya está ordenado
+    for i in range(1, n):
+        actual = corredores[i]
+        tiempo_actual = actual["tiempo_seg"]
+        j = i - 1
+
+        # Desplazamos hacia la derecha los elementos mayores al tiempo_actual
+        while j >= 0:
+            comparaciones += 1
+            if corredores[j]["tiempo_seg"] > tiempo_actual:
+                corredores[j + 1] = corredores[j]
+                desplazamientos += 1
+                j -= 1
+            else:
+                break
+
+        # Insertamos el elemento en su posición correcta
+        corredores[j + 1] = actual
+
+    return corredores, comparaciones, desplazamientos
+
+
+def formatear_tiempo(segundos):
+    minutos = segundos // 60
+    seg_restantes = segundos % 60
+    return f"{minutos:02d}:{seg_restantes:02d} min ({segundos}s)"
+
+
+def imprimir_tabla(titulo, lista):
+    print(f"\n--- {titulo} ---")
+    for pos, c in enumerate(lista, start=1):
+        print(f"  #{pos} | Dorsal {c['dorsal']} - {c['nombre']:<16} | Tiempo: {formatear_tiempo(c['tiempo_seg'])}")
+
+
+if __name__ == "__main__":
+    # Registro de llegada desordenado
+    registro_carrera = [
+        {"dorsal": 104, "nombre": "Luis Cámara", "tiempo_seg": 1420},
+        {"dorsal": 112, "nombre": "Elena Uc", "tiempo_seg": 1185},
+        {"dorsal": 108, "nombre": "Jorge Pech", "tiempo_seg": 1310},
+        {"dorsal": 119, "nombre": "Mariana Chan", "tiempo_seg": 1140},
+        {"dorsal": 101, "nombre": "Ricardo Balam", "tiempo_seg": 1505},
+        {"dorsal": 115, "nombre": "Paola Tun", "tiempo_seg": 1245}
+    ]
+
+    print("====================================================")
+    print("   CARRERA 5K - ORDENAMIENTO POR INSERCIÓN")
+    print("====================================================")
+
+    imprimir_tabla("REGISTROS DE LLEGADA (SIN ORDENAR)", registro_carrera)
+
+    tabla_posiciones, total_comp, total_desp = ordenamiento_insercion(registro_carrera.copy())
+
+    imprimir_tabla("TABLA OFICIAL DE POSICIONES (PODIO)", tabla_posiciones)
+
+    print(f"\n[Métricas] Comparaciones: {total_comp} | Desplazamientos: {total_desp}")
+    print(f"[Ganador] 1er Lugar: {tabla_posiciones[0]['nombre']} con {formatear_tiempo(tabla_posiciones[0]['tiempo_seg'])}")
