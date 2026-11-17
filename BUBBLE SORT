@@ -1,0 +1,65 @@
+# ==============================================================================
+# EJERCICIO 1: ORDENAMIENTO POR BURBUJA (BUBBLE SORT)
+# Caso práctico: Ordenar promedios finales de alumnos de menor a mayor
+# ==============================================================================
+
+def ordenamiento_burbuja(estudiantes):
+    """
+    Ordena una lista de tuplas (nombre, promedio) usando el método de Burbuja
+    en orden ascendente según el promedio.
+    """
+    n = len(estudiantes)
+    comparaciones = 0
+    intercambios = 0
+
+    # Recorremos toda la lista n - 1 veces
+    for i in range(n - 1):
+        hubo_intercambio = False  # Optimización para detener si ya está ordenado
+
+        # En cada pasada, los últimos i elementos ya están en su posición final
+        for j in range(0, n - i - 1):
+            comparaciones += 1
+            # Comparamos el promedio actual con el siguiente
+            if estudiantes[j][1] > estudiantes[j + 1][1]:
+                estudiantes[j], estudiantes[j + 1] = estudiantes[j + 1], estudiantes[j]
+                intercambios += 1
+                hubo_intercambio = True
+
+        # Si no hubo ningún intercambio en esta pasada, la lista ya está ordenada
+        if not hubo_intercambio:
+            break
+
+    return estudiantes, comparaciones, intercambios
+
+
+def mostrar_lista(titulo, lista):
+    print(f"\n--- {titulo} ---")
+    for nombre, promedio in lista:
+        print(f"  Alumno: {nombre:<15} | Promedio: {promedio:.1f}")
+
+
+if __name__ == "__main__":
+    # Lista original desordenada: (Nombre del alumno, Promedio final)
+    grupo_alumnos = [
+        ("Carlos Mendoza", 84.5),
+        ("Sofía Ramírez", 96.0),
+        ("Diego Torres", 68.0),
+        ("Valeria Castro", 91.5),
+        ("Mateo Herrera", 73.0),
+        ("Fernanda López", 62.5),
+        ("Andrés Silva", 88.0)
+    ]
+
+    print("====================================================")
+    print("   SISTEMA ESCOLAR - ORDENAMIENTO POR BURBUJA")
+    print("====================================================")
+
+    mostrar_lista("LISTA ORIGINAL (DESORDENADA)", grupo_alumnos)
+
+    # Ejecutamos el algoritmo sobre una copia para conservar la original intacta
+    lista_ordenada, total_comp, total_inter = ordenamiento_burbuja(grupo_alumnos.copy())
+
+    mostrar_lista("LISTA ORDENADA (MENOR A MAYOR PROMEDIO)", lista_ordenada)
+
+    print(f"\n[Métricas] Comparaciones realizadas: {total_comp} | Intercambios: {total_inter}")
+    print(f"[Alerta] Alumno con menor promedio: {lista_ordenada[0][0]} ({lista_ordenada[0][1]})")
