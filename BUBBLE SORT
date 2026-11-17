@@ -1,8 +1,3 @@
-# ==============================================================================
-# EJERCICIO 1: ORDENAMIENTO POR BURBUJA (BUBBLE SORT)
-# Caso práctico: Ordenar promedios finales de alumnos de menor a mayor
-# ==============================================================================
-
 def ordenamiento_burbuja(estudiantes):
     """
     Ordena una lista de tuplas (nombre, promedio) usando el método de Burbuja
