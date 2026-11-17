@@ -1,0 +1,58 @@
+def ordenamiento_seleccion(inventario):
+    """
+    Ordena una lista de listas [codigo, producto, precio] de menor a mayor precio
+    utilizando el algoritmo de Selección.
+    """
+    n = len(inventario)
+    comparaciones = 0
+    intercambios = 0
+
+    for i in range(n - 1):
+        # Suponemos que el primer elemento no ordenado es el mínimo
+        indice_minimo = i
+
+        # Buscamos el verdadero mínimo en el resto de la lista
+        for j in range(i + 1, n):
+            comparaciones += 1
+            if inventario[j][2] < inventario[indice_minimo][2]:
+                indice_minimo = j
+
+        # Solo intercambiamos si encontramos un elemento menor en otra posición
+        if indice_minimo != i:
+            inventario[i], inventario[indice_minimo] = inventario[indice_minimo], inventario[i]
+            intercambios += 1
+
+    return inventario, comparaciones, intercambios
+
+
+def mostrar_catalogo(titulo, productos):
+    print(f"\n--- {titulo} ---")
+    for sku, nombre, precio in productos:
+        print(f"  [{sku}] {nombre:<26} | ${precio:>8,.2f} MXN")
+
+
+if __name__ == "__main__":
+    # Inventario desordenado: [SKU, Nombre del producto, Precio en MXN]
+    catalogo_tienda = [
+        ["HW-01", "Monitor IPS 24 pulgadas", 3299.00],
+        ["HW-02", "Cable HDMI 2.1 Trenzado", 249.50],
+        ["HW-03", "Teclado Mecánico RGB", 1150.00],
+        ["HW-04", "Memoria USB 64GB 3.2", 185.00],
+        ["HW-05", "SSD NVMe 1TB PCIe 4.0", 1690.00],
+        ["HW-06", "Mouse Inalámbrico Óptico", 420.00]
+    ]
+
+    print("====================================================")
+    print("   TIENDA TECH - ORDENAMIENTO POR SELECCIÓN")
+    print("====================================================")
+
+    mostrar_catalogo("CATÁLOGO ORIGINAL (SIN ORDENAR)", catalogo_tienda)
+
+    # Clonamos sublistas para no alterar el arreglo original
+    copia_catalogo = [item.copy() for item in catalogo_tienda]
+    catalogo_ordenado, total_comp, total_inter = ordenamiento_seleccion(copia_catalogo)
+
+    mostrar_catalogo("CATÁLOGO ORDENADO (PRECIO: MENOR A MAYOR)", catalogo_ordenado)
+
+    print(f"\n[Métricas] Comparaciones realizadas: {total_comp} | Intercambios físicos: {total_inter}")
+    print(f"[Oferta] Artículo más económico: {catalogo_ordenado[0][1]} (${catalogo_ordenado[0][2]:,.2f} MXN)")
